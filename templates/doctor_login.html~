@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Doctor Sign In</title>
+        <link href="/static/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/jumbotron-narrow.css" rel="stylesheet">
+        <link href="/static/signup.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <nav>
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation" class="active"><a href="#">Sign In</a></li>
+                        <li role="presentation"><a href="{{ url_for('doctor_add') }}">Sign Up</a></li>
+                    </ul>
+                </nav>
+                <h3 class="text-muted">Sintagografisi Web App</h3>
+            </div>
+            
+            <div class="jumbotron">
+                <h2>Sign In</h2>
+                    {% if error %}
+                    {% endif %}
+                    <form action="{{ url_for('doctor_auth') }}" method="post" class="form-signin">
+                        <label for="username" class="sr-only">Username</label>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Όνομα Χρήστη" required autofocus>
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Κωδικός" required>
+                        <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Έισοδος</button>
+                    </form>
+            </div>
+            
+        </div>
+    </boby>
+</html>

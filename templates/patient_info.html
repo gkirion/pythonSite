@@ -1,0 +1,68 @@
+{% extends "doctor_base_page.html" %}
+{% block title %} Στοιχεία Ασθενούς {% endblock %}
+{% block main_content %}
+<div class="row row-offcanvas row-offcanvas-left">
+    <div class="col-md-2" id="sidebar" role="navigation">
+        <div class="sidebar-nav">
+            <div class="well" style="padding:2px 0;">
+                <ul class="nav nav-list">
+                    <li><a class="btn" href="{{ url_for('show_patient', doctor_id=doctor_id, patient_id=patient_id) }}">Στοιχεία Ασθενούς</a></li>
+                    <li><a class="btn" href="{{url_for('sintagografisi_show', doctor_id=doctor_id, patient_id=patient_id)}}">Συνταγογράφηση</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <form method="post">
+            <table>
+                <tr>
+                    <th><label for="name">Όνομα Ασθενούς</label></th>
+                    <td><input type="text" class="form-control" name="name" id="name" 
+                        value="{% if patient %}{{patient.name}}{% endif %}" required></td>
+                    <th><label for="code">Κωδικός Ασθενούς</label></th>
+                    <td><input type="text" class="form-control" name="code" id="code" 
+                        value="{% if patient %}{{patient.code}}{% endif %}" required></td>
+                    <th><label for="surname">Επώνυμο Ασθενούς</label></th>
+                    <td><input type="text" class="form-control" name="surname" id="surname"
+                        value="{% if patient %}{{patient.surname}}{% endif %}" required></td>
+                </tr>
+                <tr>
+                    <th><label for="area">Περιοχή</label></th>
+                    <td><input type="text" class="form-control" name="area" id="area" 
+                        value="{% if patient %}{{patient.area}}{% endif %}" required></td>
+                    <th><label for="street">Οδός</label></th>
+                    <td><input type="text" class="form-control" name="street" id="street"
+                        value="{% if patient %}{{patient.street}}{% endif %}" required></td>
+                    <th><label for="street_number">Αριθμός</label></th>
+                    <td><input type="text" class="form-control" name="street_number" id="street_number"
+                        value="{% if patient %}{{patient.street_number}}{% endif %}" required></td>
+                </tr>
+                <tr>
+                    <th><label for="birthdate">Ημ. Γέννησης</label></th>
+                    <td><div class="input-group">
+                        <input type="text" class="form-control datepick medtext" 
+                            placeholder="yy/mm/dd" name="birthdate" id="birthdate" 
+                                value="{% if patient %}{{patient.birthdate}}{% endif %}" required>
+                        <span class="input-group-addon id="btn">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>        
+                        </div> 
+                    </td>
+                    <th><label for="resp_doctor">Υπεύθυνος Ιατρός</label></th>
+                    <td><input type="text" class="form-control" name="resp_doctor" id="resp_doctor" 
+                        value="{% if patient %}{{patient.doctor_id}}{% else %}{{doctor_id}}{% endif %}" required
+                        readonly></td>
+                    <th><label for="phone">Αρ. Τηλεφώνου</label></th>
+                    <td><input type="text" class="form-control" name="phone" id="phone" 
+                        value="{% if patient %}{{patient.phone}}{% endif %}" required></td>
+                </tr>
+            </table>
+            <input type="submit" class="btn btn-primary" name="save" value="Αποθήκευση">
+            <button type="reset" class="btn btn-info" name="clear" value="Επαναφορά">Επαναφορά</button>
+        </form>
+        <script>
+            $(".datepick").datepicker({dateFormat: 'yy-mm-dd'});
+        </script>
+    </div>
+</div>
+{% endblock %}

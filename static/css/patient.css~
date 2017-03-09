@@ -1,0 +1,155 @@
+select.ui-datepicker-month {
+	color: black;
+}
+select.ui-datepicker-year {
+	color: black;
+}
+
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.medsel {
+    width: 144px;
+}
+
+.medtext {
+    max-width: 104px;
+}
+
+.tab-content {
+	border: 1px solid #ddd;
+	padding: 1px;
+}
+
+.nav-tabs li a {
+	font-size: 15px;
+}
+
+/* fix tabs height */
+/* #menu1, #menu2 {
+	height: 400px;
+} */
+
+
+fieldset.fs {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 60 1.5em 7 !important;
+    border-color: #ccc;
+    border-style: solid;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+
+legend.fs {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:0 10px;
+    border-bottom:none;
+    color: #aaa;
+}
+
+.ui-datepicker {
+    z-index: 6 !important;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 5; /* sit on top */
+    padding-top: 100px; /* location of content */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0); /* fallback */
+    background-color: rgba(0,0,0,0.4) /* black with opacity */
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+
+@-webkit-keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to   {top: 0; opacity: 1}
+}
+
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to   {top: 0; opacity: 1}
+}
+
+.close {
+    /*color: white;*/
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    /*background-color: #5cb85c;*/
+    /*color: white;*/
+}
+
+.modal-body {
+    padding: 2px 16px;
+    
+}
+
+table {
+    margin: auto;
+}
+
+th {
+    padding: 0px 10px 0px 10px;
+    height: 60px;
+}
+
+td {
+    padding: 0px 10px 0px 0px;
+}
+
+.col-md-10 {
+    padding-left: 0px;
+}
+
+div.tab-content {
+    overflow: auto;
+}
+
+textarea.form-control {
+	width: 260px;
+	height: 50px;
+}
+
+input.form-control, select {
+    width: 144px;
+}
+
+input.bigInput, select.bigInput {
+    width: 260px;
+}

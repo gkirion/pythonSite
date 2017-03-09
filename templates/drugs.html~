@@ -1,0 +1,44 @@
+{% extends "doctor_base_page.html" %}
+{% block title %} Φάρμακα {% endblock %}
+{% block main_content %}
+<div class="row row-offcanvas row-offcanvas-left">
+    <div class="col-md-2" id="sidebar" role="navigation">
+        <div class="sidebar-nav">
+            <div class="well" style="padding:2px 0;">
+                <ul class="nav nav-list">
+                    <li><a class="btn" href="{{ url_for('show_patient', doctor_id=doctor_id, patient_id=patient_id) }}">Στοιχεία Ασθενούς</a></li>
+                    <li><a class="btn" href="{{url_for('sintagografisi_show', doctor_id=doctor_id, patient_id=patient_id)}}">Συνταγογράφηση</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        
+        <h2>Φάρμακα</h2>
+        <hr>
+            <table id="grid" class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th data-column-id="id">Κωδικός</th>
+                        <th data-column-id="drug_name">Όνομα Φαρμάκου</th>
+                        <td data-column-id="formula">Δραστική Ουσία</th>
+                        <th data-column-id="company_name">Εταιρία</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if drugs %}
+                    {% for drug in drugs %}
+                        <tr>
+                            <td>{{drug.id}}</td>
+                            <td>{{drug.drug_name}}</td>
+                            <td>{{drug.formula}}</td>
+                            <td>{{drug.company_name}}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+            
+    </div>
+</div>
+{% endblock %}

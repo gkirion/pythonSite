@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Αναζήτηση Ασθενούς{% endblock %}</title>
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/login.css" rel="stylesheet">
+        <link href="/static/css/jquery.bootgrid.min.css" rel="stylesheet">
+        <link href="/static/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
+        <link href="/static/css/patient.css" rel="stylesheet">
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="/static/js/jquery.bootgrid.min.js"></script>
+        <script src="/static/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Sintagografisi Web App</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="{% if search %} active {% endif %}">
+                        <a href="{{ url_for('main_page', doctor_id=doctor_id) }}">Αναζήτηση Ασθενούς</a></li>
+                        <li class="{% if add %} active {% endif %}">
+                        <a href="{{ url_for('add_patient', doctor_id=doctor_id) }}">Εισαγωγή Ασθενούς</a></li>
+                        <li class="{% if sintages %} active {% endif %}">
+                        <a href="{{url_for('sintages_show', doctor_id=doctor_id)}}">Συνταγές</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span class="glyphicon glyphicon-user"></span> User <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('doctor_login') }}">
+                                    <span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            {% block main_content %}
+            <h2>Αναζήτηση Ασθενούς</h2>
+            <hr>
+            <form method="post">
+                <table>
+                    <tr>
+                        <th>
+                            <label for="code">Κωδικός Ασθενούς:</label>
+                        </th>
+                        <td>
+                            <input type="text" name="code" id="code" class="form-control">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="name">Όνομα Ασθενούς:</label>
+                        </th>
+                        <td>
+                            <input type="text" name="name" id="name" class="form-control">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="surname">Επώνυμο Ασθενούς:</label>
+                        </th>
+                        <td>
+                            <input type="text" name="surname" id="surname" class="form-control">
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" class="btn btn-primary" name="search" value="Αναζήτηση">
+	            <button type="reset" class="btn btn-info" name="clean" value="Καθαρισμός">Καθαρισμός</button>
+            </form>
+            <hr>
+            
+            <table id="grid" class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th data-column-id="code">Κωδ. Ασθενούς</th>
+                        <th data-column-id="name">Όνομα Ασθενούς</th>
+                        <th data-column-id="surname">Επώνυμο Ασθενούς</th>
+                        <th data-column-id="link" data-formatter="link" data-sortable="false" 
+                            data-width="10%" data-header-css-class="link-grid-column">Eπιλογή</th>
+                        <th data-column-id="pk" data-visible="false" data-visible-in-selection="false"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if patients %}
+                    {% for pat in patients %}
+                        <tr>
+                            <td>{{pat.code}}</td>
+                            <td>{{pat.name}}</td>
+                            <td>{{pat.surname}}</td>
+                            <td><span class="glyphicon glyphicon-eye-open"></span></td>
+                            <td>{{pat.id}}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+            <script>
+                $("#grid").bootgrid({
+                            formatters: {
+                                'link': function(col, row) {
+                                    return "<a href=\"{{url_for('main_page', doctor_id=doctor_id)}}/patient/" + row.pk + "\"><span class=\"glyphicon glyphicon-eye-open\"></span></a>"
+                                }
+                            }});
+        </script>
+        {% endblock %}
+        
+        </div>
+    </body>
+</html>

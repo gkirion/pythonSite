@@ -1,0 +1,91 @@
+{% extends "doctor_base_page.html" %}
+{% block title %} Συνταγογράφηση {% endblock %}
+{% block main_content %}
+<div class="row row-offcanvas row-offcanvas-left">
+    <div class="col-md-2" id="sidebar" role="navigation">
+        <div class="sidebar-nav">
+            <div class="well" style="padding:2px 0;">
+                <ul class="nav nav-list">
+                    <li><a class="btn" href="{{ url_for('show_patient', doctor_id=doctor_id, patient_id=patient_id) }}">Στοιχεία Ασθενούς</a></li>
+                    <li><a class="btn" href="{{url_for('sintagografisi_show', doctor_id=doctor_id, patient_id=patient_id)}}">Συνταγογράφηση</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <h2>Νέα Συνταγή</h2>
+        <hr>
+        <form method="post">
+            <table>
+                <tr>
+                    <td><input type="hidden" class="form-control" name="patient_id" id="patient_id" 
+                        value="{{patient_id}}" required></td>
+                    <td><input type="hidden" class="form-control" name="doctor_id" id="doctor_id" 
+                        value="{{doctor_id}}" required></td>
+                    <td><input type="hidden" class="form-control" name="drug_id" id="drug_id" required></td>
+                </tr>
+                <tr>
+                    <th><label for="drug_name">Όνομα Φαρμάκου</label></th>
+                    <td><input type="text" class="form-control" name="drug_name" id="drug_name" 
+                                       readonly required></td>
+                </tr>
+                <tr>                       
+                    <th><label for="drug_formula">Δραστική Ουσία</label></th>
+                    <td><input type="text" class="form-control" name="drug_formula" id="drug_formula"
+                                        readonly required></td>
+                </tr>
+                <tr>                         
+                    <th><label for="quantity">Ποσότητα</label></th>
+                    <td><input type="number" min="1" max="3" class="form-control" 
+                               name="quantity" id="quantity" required></td>
+                </tr>
+            </table>
+            <input type="submit" class="btn btn-primary" name="save" value="Αποθήκευση">
+            <button type="reset" class="btn btn-info" name="clear" value="Επαναφορά">Επαναφορά</button>
+        </form>
+        <hr>
+            
+            <table id="grid" class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th data-column-id="name">Όνομα Φαρμάκου</th>
+                        <th data-column-id="formula">Δραστική Ουσία</th>
+                        <td data-column-id="company">Εταιρία</th>
+                        <th data-column-id="link" data-formatter="link" data-sortable="false" 
+                            data-width="10%" data-header-css-class="link-grid-column">Eπιλογή</th>
+                        <th data-column-id="pk" data-visible="false" data-visible-in-selection="false"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if drugs %}
+                    {% for drug in drugs %}
+                        <tr>
+                            <td>{{drug.drug_name}}</td>
+                            <td>{{drug.formula}}</td>
+                            <td>{{drug.company_name}}</td>
+                            <td><span class="glyphicon glyphicon-plus"></span></td>
+                            <td>{{drug.id}}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+            
+            <script>
+                var grid = $("#grid").bootgrid({
+                    formatters: {
+                                'link': function(col, row) {
+                                    return "<button class=\" btn btn-xs btn-default command-edit\" data-row-id=\"" + row.pk + "\" data-row-name=\"" + row.name + "\" data-row-formula=\"" + row.formula + "\"><span class=\"glyphicon glyphicon-plus\"></span></button>"
+                                }
+                            }}).on("loaded.rs.jquery.bootgrid", function() {
+                                    /* Executes after data is loaded and rendered */
+                                    grid.find(".command-edit").on("click", function(e) {
+                                        $("#drug_id").val($(this).data("row-id"));
+                                        $("#drug_name").val($(this).data("row-name"));
+                                        $("#drug_formula").val($(this).data("row-formula"));
+                            })});                   
+            </script>
+            
+    </div>
+</div>
+{% endblock %}

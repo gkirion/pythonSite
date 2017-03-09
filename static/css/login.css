@@ -1,0 +1,19 @@
+th {
+    padding: 0px 0px 0px 10px;
+    height: 60px;
+}
+
+td {
+    padding: 0px 10px 0px 0px;
+}
+
+input.form-control, select {
+    width: 144px;
+}
+
+label {
+    clear: left;
+    float: left;
+    text-align: right;
+    padding-right: 10px;
+}

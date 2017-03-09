@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Αναζήτηση Συνταγής{% endblock %}</title>
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/login.css" rel="stylesheet">
+        <link href="/static/css/jquery.bootgrid.min.css" rel="stylesheet">
+        <link href="/static/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
+        <link href="/static/css/patient.css" rel="stylesheet">
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="/static/js/jquery.bootgrid.min.js"></script>
+        <script src="/static/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Sintagografisi Web App</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="{% if search %} active {% endif %}">
+                        <a href="{{ url_for('pharmacy_main_page', pharmacy_id=pharmacy_id) }}">Αναζήτηση Συνταγής</a></li>
+                        <li class="{% if drugs %} active {% endif %}">
+                        <a href="{{ url_for('drugs_list', pharmacy_id=pharmacy_id) }}">Φάρμακα</a></li>
+                        <li class="{% if contract %} active {% endif %}">
+                        <a href="#">Συμβόλαια</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span class="glyphicon glyphicon-user"></span> User <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('pharmacy_login') }}">
+                                    <span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            {% block main_content %}
+            <h2>Αναζήτηση Συνταγής</h2>
+            <hr>
+            <form method="post">
+                <table>
+                    <tr>
+                        <th>
+                            <label for="code">Κωδικός Συνταγής:</label>
+                        </th>
+                        <td>
+                            <input class="form-control bigInput" type="text" name="code" id="code" class="form-control">
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" class="btn btn-primary" name="search" value="Αναζήτηση">
+	            <button type="reset" class="btn btn-info" name="clean" value="Καθαρισμός">Καθαρισμός</button>
+            </form>
+            <hr>
+            {% if sintagi %}
+                    <table class="sintagi-table">
+	                    <tr><th>Ημερομηνία:</th><td id="sintagi_date">{{sintagi.date}}</td></tr>
+	                    <tr><th>Κωδικός:</th><td id="sintagi_code">{{sintagi.code}}</td></tr>
+	                </table>
+	                <table class="sintagi-table">
+	                    <tr>
+	                        <td>
+	                            <table cellspacing="10">
+	                                <caption>Στοιχεία Ιατρού</caption>
+	                                <tr>
+	                                    <th>Όνομα: </th>
+	                                    <td id="doctor_name">{{sintagi.doctor_name}}</td>
+	                                </tr>
+	                                <tr>    
+	                                    <th>Επώνυμο: </th>
+	                                    <td id="doctor_surname">{{sintagi.doctor_surname}}</td>
+	                                </tr>
+	                                <tr>    
+	                                    <th>Ειδικότητα: </th>
+	                                    <td id="doctor_speciality">{{sintagi.doctor_speciality}}</td>
+	                                </tr>
+	                            </table>
+	                        </td>
+	                        <td>
+	                            <table>
+	                                <caption>Στοιχεία Ασθενούς</caption>
+	                                <tr>
+	                                    <th>Όνομα: </th>
+	                                    <td id="patient_name">{{sintagi.patient_name}}</td>
+	                                </tr>
+	                                <tr>    
+	                                    <th>Επώνυμο: </th>
+	                                    <td id="patient_surname">{{sintagi.patient_surname}}</td>
+	                                </tr>
+	                                <tr><th></th><td></td></tr>
+	                            </table>
+	                        </td>
+	                        <td>
+	                            <table>
+	                                <caption>Στοιχεία Φαρμάκου</caption>
+	                                <tr>
+	                                    <th>Όνομα: </th>
+	                                    <td id="drug_name">{{sintagi.drug_name}}</td>
+	                                </tr>
+	                                <tr>    
+	                                    <th>Ποσότητα: </th>
+	                                    <td id="drug_quantity">{{sintagi.quantity}}</td>
+	                                </tr>
+	                                <tr><th></th><td></td></tr>
+	                            </table>
+	                        </td>
+	                    </tr>
+	                </table>
+	        {% endif %}
+        {% endblock %}
+        </div>
+    </body>
+</html>

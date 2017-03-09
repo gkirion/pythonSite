@@ -1,0 +1,162 @@
+{% extends "doctor_base_page.html" %}
+{% block title %} Συνταγές {% endblock %}
+{% block main_content %}
+<div class="row row-offcanvas row-offcanvas-left">
+    <div class="col-md-2" id="sidebar" role="navigation">
+        <div class="sidebar-nav">
+            <div class="well" style="padding:2px 0;">
+                <ul class="nav nav-list">
+                    <li><a class="btn" href="{{ url_for('show_patient', doctor_id=doctor_id, patient_id=patient_id) }}">Στοιχεία Ασθενούς</a></li>
+                    <li><a class="btn" href="{{url_for('sintagografisi_show', doctor_id=doctor_id, patient_id=patient_id)}}">Συνταγογράφηση</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="modal">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <span class="close" onclick="hideModal();">&times;</span>
+	                <h2> Συνταγή </h2>
+	            </div>
+	            <div class="modal-body">
+	                <table class="sintagi-table">
+	                	<tr><th>Ημερομηνία:</th><td id="sintagi_date"></td></tr>
+	                    <tr><th>Κωδικός:</th><td id="sintagi_code"></td></tr>
+	                </table>
+	                <table class="sintagi-table">
+	                    <tr>
+	                        <td>
+	                            <table cellspacing="10">
+	                                <caption>Στοιχεία Ιατρού</caption>
+	                                <tr>
+	                                    <th>Όνομα: </th>
+	                                    <td id="doctor_name"></td>
+	                                </tr>
+	                                <tr>    
+	                                    <th>Επώνυμο: </th>
+	                                    <td id="doctor_surname"></td>
+	                                </tr>
+	                                <tr>    
+	                                    <th>Ειδικότητα: </th>
+	                                    <td id="doctor_speciality"></td>
+	                                </tr>
+	                            </table>
+	                        </td>
+	                        <td>
+	                            <table>
+	                                <caption>Στοιχεία Ασθενούς</caption>
+	                                <tr>
+	                                    <th>Όνομα: </th>
+	                                    <td id="patient_name"></td>
+	                                </tr>
+	                                <tr>    
+	                                    <th>Επώνυμο: </th>
+	                                    <td id="patient_surname"></td>
+	                                </tr>
+	                                <tr><th></th><td></td></tr>
+	                            </table>
+	                        </td>
+	                        <td>
+	                            <table>
+	                                <caption>Στοιχεία Φαρμάκου</caption>
+	                                <tr>
+	                                    <th>Όνομα: </th>
+	                                    <td id="drug_name"></td>
+	                                </tr>
+	                                <tr>    
+	                                    <th>Ποσότητα: </th>
+	                                    <td id="drug_quantity"></td>
+	                                </tr>
+	                                <tr><th></th><td></td></tr>
+	                            </table>
+	                        </td>
+	                    </tr>
+	                </table>
+	            </div>
+	            <div class="modal-footer">
+	            </div>
+	        </div>
+	    </div>    
+        <h2>Συνταγές</h2>
+        <hr>
+            <table id="grid" class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th data-column-id="date">Ημερομηνία</th>
+                        <th data-column-id="patient_code">Κωδικός Ασθενούς</th>
+                        <td data-column-id="drug">Φάρμακο</th>
+                        <th data-column-id="link" data-formatter="link" data-sortable="false" 
+                            data-width="10%" data-header-css-class="link-grid-column">Eπιλογή</th>
+                        <th data-column-id="pk" data-visible="false" data-visible-in-selection="false"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if sintages %}
+                    {% for sintagi in sintages %}
+                        <tr>
+                            <td>{{sintagi.date}}</td>
+                            <td>{{sintagi.code}}</td>
+                            <td>{{sintagi.name}}</td>
+                            <td><span class="glyphicon glyphicon-eye-open"></span></td>
+                            <td>{{sintagi.id}}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+            
+            <script>
+                var grid = $("#grid").bootgrid({
+                    formatters: {
+                                'link': function(col, row) {
+                                    return "<a href=\"{{url_for('sintages_show', doctor_id=doctor_id)}}" + row.pk + "/\" onclick=\"showModal(this);return false;\"><span class=\"glyphicon glyphicon-eye-open\"></span></a>";
+                                }
+                            }});
+                            
+            
+                var modal = document.getElementsByClassName("modal")[0];
+	      	    var xmlhttp = new XMLHttpRequest();
+	      	    var sintagi = null;
+	      	    
+	      	    xmlhttp.onreadystatechange = function() {
+	      	        if (this.readyState == 4 && this.status == 200) {
+	      	            sintagi = JSON.parse(this.responseText);
+	      	            updateFields();
+	      	        }
+	      	    }
+	      	    
+	      	    function updateFields() {
+	      	        document.getElementById("sintagi_date").innerHTML = sintagi.date;
+	      	        document.getElementById("sintagi_code").innerHTML = sintagi.code;
+	      	        document.getElementById("doctor_name").innerHTML = sintagi.doctor_name;
+                    document.getElementById("doctor_surname").innerHTML = sintagi.doctor_surname;
+                    document.getElementById("doctor_speciality").innerHTML = sintagi.doctor_speciality;
+                    document.getElementById("patient_name").innerHTML = sintagi.patient_name;
+                    document.getElementById("patient_surname").innerHTML = sintagi.patient_surname;
+                    document.getElementById("drug_name").innerHTML = sintagi.drug_name;
+                    document.getElementById("drug_quantity").innerHTML = sintagi.quantity;
+	      	    }
+                                    
+                function showModal(obj) {
+                    modal.style.display = "block";
+                    url = obj.getAttribute("href");
+                    xmlhttp.open("GET", url, true);
+                    xmlhttp.send();
+                }       
+                
+                function hideModal() {
+	      	        modal.style.display = "none";
+	      	    }
+	      	
+	      	    window.onclick = function(event) {
+	      	        if (event.target == modal) {
+	      	            hideModal();
+	      	        }
+	      	    }         
+                                                
+            </script>
+            
+    </div>
+</div>
+{% endblock %}

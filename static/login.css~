@@ -1,0 +1,17 @@
+th {
+    padding: 0px 0px 0px 10px;
+    height: 60px;
+}
+
+td {
+    padding: 0px 10px 0px 0px;
+}
+
+input.form-control, select {
+    width: 144px;
+}
+
+label {
+
+    display:inline-block;
+}
